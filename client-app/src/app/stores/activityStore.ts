@@ -125,7 +125,6 @@ export default class ActivityStore {
         this.loading = true;
         try {
             await agent.Activities.delete(id);
-
             runInAction(() => {
                 this.activityRegistry.delete(id);
                 this.loading = false;
