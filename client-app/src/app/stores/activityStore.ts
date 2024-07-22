@@ -186,7 +186,10 @@ export default class ActivityStore {
             runInAction(() => {
                 this.selectedActivity!.isCancelled =
                     !this.selectedActivity?.isCancelled;
-                    this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
+                this.activityRegistry.set(
+                    this.selectedActivity!.id,
+                    this.selectedActivity!
+                );
             });
         } catch (error) {
             console.log(error);
@@ -197,5 +200,18 @@ export default class ActivityStore {
 
     clearSelectedActivity = () => {
         this.selectedActivity = undefined;
-    }
+    };
+
+    updateAttendeeFollowing = (username: string) => {
+        this.activityRegistry.forEach((activity) => {
+            activity.attendees?.forEach((attendee: Profile) => {
+                if (attendee.username === username) {
+                    attendee.following
+                        ? attendee.followersCount--
+                        : attendee.followersCount++;
+                    attendee.following = !attendee.following;
+                }
+            });
+        });
+    };
 }
